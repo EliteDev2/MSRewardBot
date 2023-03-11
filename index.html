@@ -68,7 +68,7 @@
 						a.onload = function(){
 							window.setTimeout(function(){
 								a.remove();
-							}, 1000);
+							}, 2500);
 						}
 						frameReady += 1;
 					}
@@ -80,7 +80,7 @@
 					if(frameReady>=(Number(localStorage.getItem("searches"))-1)){
 						window.clearInterval(isDone);
 						if(checkBoolean(localStorage.getItem("autoreload"))){
-							document.querySelector("#status").innerText = "Done! Reloading in 1 seconds...";
+							document.querySelector("#status").innerText = "Done! Reloading in 2.5 seconds...";
 							window.setTimeout(function(){
 								location.reload();
 							}, 2500);
