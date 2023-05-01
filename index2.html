@@ -1,35 +1,39 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Random Bing Searches</title>
-	<script>
-		function doRandomSearch() {
-			var iframe = document.createElement('iframe');
-			iframe.src = 'https://www.bing.com/search?q=' + Math.random().toString(36).substring(2, 8);
-			document.body.appendChild(iframe);
-			
-			var completed = parseInt(document.getElementById('completed').innerText);
-			var remaining = parseInt(document.getElementById('remaining').innerText);
-			if (completed < 45) {
-				completed++;
-				remaining--;
-				document.getElementById('completed').innerText = completed;
-				document.getElementById('remaining').innerText = remaining;
-				document.title = completed + '/45 Random Bing Searches';
-			} else {
-				clearInterval(intervalId);
-			}
-		}
-		
-		var completed = 0;
-		var remaining = 45;
-		var intervalId = setInterval(doRandomSearch, 2500);
-	</script>
-</head>
-<body>
-	<h1>Random Bing Searches</h1>
-	<p>Completed: <span id="completed">0</span></p>
-	<p>Remaining: <span id="remaining">45</span></p>
-	<div id="searches"></div>
-</body>
+  <head>
+    <title>Bing Search Bot</title>
+  </head>
+  <body>
+    <h1>Bing Search Bot</h1>
+    <p>Completed: <span id="completed">0</span> / 45</p>
+    <p>Remaining: <span id="remaining">45</span></p>
+    <iframe id="searchFrame" style="display:none;"></iframe>
+
+    <script>
+      const searches = 45;
+      let completed = 0;
+      let remaining = searches;
+
+      function doSearch() {
+        if (remaining === 0) {
+          clearInterval(searchInterval);
+          return;
+        }
+
+        const query = Math.random().toString(36).substring(2);
+        const url = `https://www.bing.com/search?q=${query}`;
+
+        const searchFrame = document.querySelector('#searchFrame');
+        searchFrame.src = url;
+
+        completed++;
+        remaining--;
+
+        document.querySelector('#completed').textContent = completed;
+        document.querySelector('#remaining').textContent = remaining;
+      }
+
+      const searchInterval = setInterval(doSearch, 2500);
+    </script>
+  </body>
 </html>
