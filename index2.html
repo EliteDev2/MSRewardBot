@@ -3,37 +3,38 @@
   <head>
     <title>Bing Search Bot</title>
   </head>
-  <body>
+  <body onload="startSearch()">
     <h1>Bing Search Bot</h1>
-    <p>Completed: <span id="completed">0</span> / 45</p>
-    <p>Remaining: <span id="remaining">45</span></p>
-    <iframe id="searchFrame" style="display:none;"></iframe>
-
+    <p>Points earned: <span id="points"></span></p>
     <script>
-      const searches = 45;
-      let completed = 0;
-      let remaining = searches;
+      let points = 0;
+      let remaining = 45;
 
       function doSearch() {
-        if (remaining === 0) {
-          clearInterval(searchInterval);
-          return;
-        }
-
         const query = Math.random().toString(36).substring(2);
-        const url = `https://www.bing.com/search?q=${query}`;
-
-        const searchFrame = document.querySelector('#searchFrame');
-        searchFrame.src = url;
-
-        completed++;
-        remaining--;
-
-        document.querySelector('#completed').textContent = completed;
-        document.querySelector('#remaining').textContent = remaining;
+        const iframe = document.querySelector("#bingsearch");
+        iframe.src = `https://www.bing.com/search?q=${query}`;
+        const interval = setInterval(() => {
+          const span = iframe.contentDocument.querySelector("#id_rc");
+          if (span) {
+            clearInterval(interval);
+            const rc = parseInt(span.innerText);
+            points += rc;
+            document.querySelector("#points").innerText = "" + points;
+            remaining--;
+            if (remaining === 0) {
+              location.reload();
+            }
+          }
+        }, 2500);
       }
 
-      const searchInterval = setInterval(doSearch, 2500);
+      function startSearch() {
+        setInterval(() => {
+          doSearch();
+        }, 2500);
+      }
     </script>
+    <iframe id="bingsearch"></iframe>
   </body>
 </html>
